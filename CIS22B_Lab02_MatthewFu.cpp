@@ -6,7 +6,7 @@ using namespace std;
 int stringLength(char* given_string);
 void stringNCopy(char str1[], char str2[], int num);
 void stringNAdd(char str3[], char str4[], int num2);
-void stringNCompare();
+void stringNCompare(char str5, char str6[], int num3);
 
 
 
@@ -46,9 +46,30 @@ int stringLength(char* given_string)
 }
 
 void stringNCopy(char str1[], char str2[], int num) {
-
+   int index = 0;
+   while ((str2[index] != '\0') && index < num)
+   {
+      str1[index] = str2[index];
+      index++;
+   }
+   str1[num] = '\0';
 }
 
 void stringNAdd(char str3[], char str4[], int num2) {
+   int index = 0;
+   int lengthOfString = 0;
 
+   while (str3[index] != '\0') {
+      index++;
+      lengthOfString++;
+   }
+
+   for (int i = 0; i < num2; i++)
+   {
+      str3[lengthOfString + i] = str4[i];
+      if (str4[i] == '\0') break;
+   }
+}
+
+void stringNCompare(char str5, char str6[], int num3) {
 }
