@@ -5,7 +5,13 @@ Date: 10/23/18
 
 Program description: This program asks the user which custom cstring functions he wants to test.
 There are four of them: a custom strlen function, a custom strncpy function, a custom strncat
-function, and a custon strncmp function. 
+function, and a custon strncmp function. After choosing one, the user is asked for a string.
+If the user chooses the custom strlen option or the custom strncpy function, the user
+is asked only one string. If the user chooses the custom strncat function or the custom
+strncmp function, the user is asked for two strings. The user is asked for a number
+for the custom strncpy, strncat, and strncmp function. This number represents, respectively,
+the maximum number of characters to be copied, maximum number of characters to be appended,
+and maximum number of character so compare.
 */
 
 #include <iostream>
@@ -16,11 +22,31 @@ using namespace std;
 //Function prototypes declared up here.
 int stringLength(char* given_string);
 void stringNCopy(char *str1, char* str2, int num);
-char* stringNAdd(char* str3, char *str4, int num2);
+void stringNAdd(char* str3, char *str4, int num2);
 int stringNCompare(char *str5, char *str6, int num3);
 
 
-
+/*Pseudocode:
+Declare the maximum size of the char input
+Declare a char to ask the user for repeated testing
+start a do-while loop
+   Prompt user for input
+   Declare the first char array
+   Declare the second char array
+   Declare a user option input
+   Declare a number option
+   If the user presses L, test the custom stringLength function
+   else if the user presses C, test the custom stringNCopy function
+   else if the user presses A, test the custom stringNAdd function
+   else if the user presses M, test the custom stringNCompare function
+      if the function returns a positive, the first string is greater than the second
+      if the function returns a negative, the second string is greater than the first
+      if the function returns a 0, the two strings are equal to each other
+   else give an invalid output 
+   Prompt the user if he would like to test again.
+      if Y, then the test repeats
+      else the program closes.
+return 0*/
 int main() {
    //Maximum size of the char input
    const int SIZE = 100;
@@ -45,6 +71,7 @@ int main() {
          cout << stringLength(line) << endl;
       }
       //Test the stringNCopy function
+      //The user is prompted only string as there shall be no overlapping.
       else if (userInput == 'C') {
          cout << "Enter a sentence of no more than "
             << (SIZE - 1) << " characters:\n";
@@ -111,8 +138,8 @@ return the length of the string
 */
 int stringLength(char* given_string)
 {
-
    int length = 0;
+
    while (*given_string != '\0') {
       length++;
       given_string++;
@@ -128,10 +155,12 @@ while the char source pointer has not pointed to null and the given number is st
 set the destination pointer to be null
 */
 void stringNCopy(char *destinationPointer, char *sourcePointer, int num) {
+
    while (*sourcePointer != '\0' && num--)
    {
       *destinationPointer++ = *sourcePointer++;    
    }
+
    *destinationPointer = '\0';
 }
 
@@ -142,17 +171,15 @@ While the source pointer has not hit null and the incoming number is still decre
 
 set the destination pointer to be null
 */
-char* stringNAdd(char *destinationPointer, char *sourcePointer, int num2) {
-  
+void stringNAdd(char *destinationPointer, char *sourcePointer, int num2) {
+  //point to the end of the first char
    char* pointerToDestination = destinationPointer + stringLength(destinationPointer);
 
    while (*sourcePointer != '\0' && num2--)
       *pointerToDestination++ = *sourcePointer++;
 
    *pointerToDestination = '\0';
-   
-
-   return destinationPointer;
+     
 }
 
 /*Pseudocode:
@@ -165,12 +192,12 @@ if the number is equal to 0(this means that the first string matches the second 
    return 0
 else
    return the difference in the value of ASCII value of the two strings. */
-int stringNCompare(char *str5, char *str6, int num3) {
-   while (num3 && *str5 && (*str5 == *str6))
+int stringNCompare(char *firstString, char *secondString, int num3) {
+   while (num3 && *firstString && (*firstString == *secondString))
    {
-      ++str5;
-      ++str6;
-      --num3;
+      ++firstString; //traverse the address of the first string
+      ++secondString; //traverse the address of the second string
+      --num3; //decrease the maximum number
    }
    if( num3==0)
    {
@@ -181,6 +208,6 @@ int stringNCompare(char *str5, char *str6, int num3) {
    {
       //If the value returned is less than 0, then the first string is less than the second
       //else the opposite is true.
-      return (*(unsigned char *)str5 - *(unsigned char *)str6);
+      return (*(unsigned char *)firstString - *(unsigned char *)secondString);
    }
 }
