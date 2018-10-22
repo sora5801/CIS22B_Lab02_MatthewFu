@@ -20,10 +20,10 @@ and maximum number of character so compare.
 using namespace std;
 
 //Function prototypes declared up here.
-int stringLength(char* given_string);
-void stringNCopy(char *str1, char* str2, int num);
-void stringNAdd(char* str3, char *str4, int num2);
-int stringNCompare(char *str5, char *str6, int num3);
+int stringLength(char *given_string);
+void stringNCopy(char *destinationPointer, char *sourcePointer, int num);
+void stringNAdd(char *destinationPointer, char *sourcePointer, int num2);
+int stringNCompare(char *firstString, char *secondString, int num3);
 
 
 /*Pseudocode:
@@ -56,7 +56,7 @@ int main() {
    do {
       // Prompt the user for which function they want to test out.
       cout << "Input L if you want to test out the stringLength function, C if you want to test out stringNCopy, " <<
-         " \n A if you want to test out the stringNAdd function, and M if you want to test out the stringNCompare function" << endl;
+         " \nA if you want to test out the stringNAdd function, and M if you want to test out the stringNCompare function" << endl;
       char line[SIZE]; //First string
       char line2[SIZE]; //Second string
       char userInput; //Input option
@@ -71,30 +71,31 @@ int main() {
          cout << stringLength(line) << endl;
       }
       //Test the stringNCopy function
-      //The user is prompted only string as there shall be no overlapping.
+      //The user is prompted only one  string as there shall be no overlapping.
       else if (userInput == 'C') {
          cout << "Enter a sentence of no more than "
             << (SIZE - 1) << " characters:\n";
          cin.ignore();
          cin.getline(line, SIZE);
-         cout << "Enter a number less than " << SIZE << endl;
+         cout << "Enter a number less than " << stringLength(line) << endl;
          cin >> number;
          stringNCopy(line2, line, number);
          cout << line2  << endl;
       }
       //Test the stringNAdd function
+      //The first string is limited to 99 characters. The second string 
+      //cannot be greater than that because the destination string has to be large
+      //enough to contain the concatenated resulting string, including the null.
       else if (userInput == 'A') {
          cout << "Enter a sentence of no more than "
             << (SIZE - 1) << " characters:\n";
          cin.ignore();
          cin.getline(line, SIZE);
-         
          cout << "Enter another sentence of no more than "
-            << (SIZE - 1) << " characters:\n";
+            << (SIZE - 1 - stringLength(line)) << " characters:\n";
        
          cin.getline(line2, SIZE);
-         
-         cout << "Enter a number less than " << SIZE << endl;
+         cout << "Enter a number less than " << SIZE - stringLength(line) << endl;
          cin >> number;
          stringNAdd(line, line2, number);
          cout << line << endl;         
@@ -121,6 +122,7 @@ int main() {
       }
       else {
          cout << "Invalid Input \n";
+         
       }
 
       cout << "Would you like to run the program again? (Y/N): " << endl;
